@@ -163,7 +163,7 @@ def delete_comment(
         raise HTTPException(403, "permission denied")
     return Response("Successfully deleted comment")
 
-@app.post("/auth/users/favorites/shanyraks/{id}", response_model=add_liked_advert_response)
+@app.post("/auth/users/favorites/shanyraks/{id}", response_model=add_liked_advert_response, tags=["Add liked advert"])
 def add_liked_advert(
     id : int,
     tuple_ : tuple = Depends(autorization)
@@ -176,14 +176,14 @@ def add_liked_advert(
     else:
         return liked_advert_repository.save_liked_advert(db, user.id, advert)
         
-@app.get("/auth/users/favorites/shanyraks", response_model=List[LikedAdvertResponse])
+@app.get("/auth/users/favorites/shanyraks", response_model=List[LikedAdvertResponse], tags=["Get liked advert"])
 def get_liked_advert(
     tuple_ : tuple = Depends(autorization)
 ):
     db, email, user = tuple_
     return liked_advert_repository.get_liked_advert(db, user)
 
-@app.delete("/auth/users/favorites/shanyraks/{id}")
+@app.delete("/auth/users/favorites/shanyraks/{id}", tags=["Delete liked advert"])
 def delete_liked_advert(
     id : int,
     tuple_ : tuple = Depends(autorization)
@@ -194,7 +194,7 @@ def delete_liked_advert(
     else:
         return Response("Successfully deleted liked advert")
     
-@app.get("/search", response_model=Search_advert_response)
+@app.get("/search", response_model=Search_advert_response, tags=["Search with parameters"])
 def search(
     limit : int = INF,
     offset : int = 0,
